@@ -17,6 +17,8 @@ import org.bytedeco.javacpp.indexer.FloatIndexer;
 
 /**
  * @author lin.yao.hi
+ * @xxxxx@author w00434739
+ * 
  * 
  */
 public class CoreFunc {
@@ -46,11 +48,11 @@ public class CoreFunc {
     public static Mat colorMatch(final Mat src, final Color r, final boolean adaptive_minsv) {
         final float max_sv = 255;
         final float minref_sv = 64;
-        final float minabs_sv = 95;
+        final float minabs_sv = 96;
 
         // blue鐨凥鑼冨洿
-        final int min_blue = 100;
-        final int max_blue = 140;
+        final int min_blue = 111;
+        final int max_blue = 141;
 
         // yellow鐨凥鑼冨洿
         final int min_yellow = 15;
