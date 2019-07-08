@@ -7,7 +7,7 @@ import org.easypr.core.CoreFunc.Color;
 
 /**
  * @author lin.yao
- * 
+ * @author jackie
  */
 public class CharsRecognise {
 

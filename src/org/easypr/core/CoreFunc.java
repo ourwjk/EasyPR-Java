@@ -16,7 +16,7 @@ import org.bytedeco.javacpp.opencv_core.Size;
 import org.bytedeco.javacpp.indexer.FloatIndexer;
 
 /**
- * @author lin.yao
+ * @author lin.yao.hi
  * 
  */
 public class CoreFunc {
@@ -29,34 +29,34 @@ public class CoreFunc {
     }
 
     /**
-     * 根据一幅图像与颜色模板获取对应的二值图
+     * 鏍规嵁涓�骞呭浘鍍忎笌棰滆壊妯℃澘鑾峰彇瀵瑰簲鐨勪簩鍊煎浘
      * 
      * @param src
-     *            输入RGB图像
+     *            杈撳叆RGB鍥惧儚
      * @param r
-     *            颜色模板（蓝色、黄色）
+     *            棰滆壊妯℃澘锛堣摑鑹层�侀粍鑹诧級
      * @param adaptive_minsv
-     *            S和V的最小值由adaptive_minsv这个bool值判断
+     *            S鍜孷鐨勬渶灏忓�肩敱adaptive_minsv杩欎釜bool鍊煎垽鏂�
      *            <ul>
-     *            <li>如果为true，则最小值取决于H值，按比例衰减
-     *            <li>如果为false，则不再自适应，使用固定的最小值minabs_sv
+     *            <li>濡傛灉涓簍rue锛屽垯鏈�灏忓�煎彇鍐充簬H鍊硷紝鎸夋瘮渚嬭“鍑�
+     *            <li>濡傛灉涓篺alse锛屽垯涓嶅啀鑷�傚簲锛屼娇鐢ㄥ浐瀹氱殑鏈�灏忓�糾inabs_sv
      *            </ul>
-     * @return 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）
+     * @return 杈撳嚭鐏板害鍥撅紙鍙湁0鍜�255涓や釜鍊硷紝255浠ｈ〃鍖归厤锛�0浠ｈ〃涓嶅尮閰嶏級
      */
     public static Mat colorMatch(final Mat src, final Color r, final boolean adaptive_minsv) {
         final float max_sv = 255;
         final float minref_sv = 64;
         final float minabs_sv = 95;
 
-        // blue的H范围
+        // blue鐨凥鑼冨洿
         final int min_blue = 100;
         final int max_blue = 140;
 
-        // yellow的H范围
+        // yellow鐨凥鑼冨洿
         final int min_yellow = 15;
         final int max_yellow = 40;
 
-        // 转到HSV空间进行处理，颜色搜索主要使用的是H分量进行蓝色与黄色的匹配工作
+        // 杞埌HSV绌洪棿杩涜澶勭悊锛岄鑹叉悳绱富瑕佷娇鐢ㄧ殑鏄疕鍒嗛噺杩涜钃濊壊涓庨粍鑹茬殑鍖归厤宸ヤ綔
         Mat src_hsv = new Mat();
         cvtColor(src, src_hsv, CV_BGR2HSV);
         MatVector hsvSplit = new MatVector();
@@ -64,7 +64,7 @@ public class CoreFunc {
         equalizeHist(hsvSplit.get(2), hsvSplit.get(2));
         merge(hsvSplit, src_hsv);
 
-        // 匹配模板基色,切换以查找想要的基色
+        // 鍖归厤妯℃澘鍩鸿壊,鍒囨崲浠ユ煡鎵炬兂瑕佺殑鍩鸿壊
         int min_h = 0;
         int max_h = 0;
         switch (r) {
@@ -85,10 +85,10 @@ public class CoreFunc {
 
         int channels = src_hsv.channels();
         int nRows = src_hsv.rows();
-        // 图像数据列需要考虑通道数的影响；
+        // 鍥惧儚鏁版嵁鍒楅渶瑕佽�冭檻閫氶亾鏁扮殑褰卞搷锛�
         int nCols = src_hsv.cols() * channels;
 
-        // 连续存储的数据，按一行处理
+        // 杩炵画瀛樺偍鐨勬暟鎹紝鎸変竴琛屽鐞�
         if (src_hsv.isContinuous()) {
             nCols *= nRows;
             nRows = 1;
@@ -134,7 +134,7 @@ public class CoreFunc {
             }
         }
 
-        // 获取颜色匹配后的二值灰度图
+        // 鑾峰彇棰滆壊鍖归厤鍚庣殑浜屽�肩伆搴﹀浘
         MatVector hsvSplit_done = new MatVector();
         split(src_hsv, hsvSplit_done);
         Mat src_grey = hsvSplit_done.get(2);
@@ -143,22 +143,22 @@ public class CoreFunc {
     }
 
     /**
-     * 判断一个车牌的颜色
+     * 鍒ゆ柇涓�涓溅鐗岀殑棰滆壊
      * 
      * @param src
-     *            车牌mat
+     *            杞︾墝mat
      * @param r
-     *            颜色模板
+     *            棰滆壊妯℃澘
      * @param adaptive_minsv
-     *            S和V的最小值由adaptive_minsv这个bool值判断
+     *            S鍜孷鐨勬渶灏忓�肩敱adaptive_minsv杩欎釜bool鍊煎垽鏂�
      *            <ul>
-     *            <li>如果为true，则最小值取决于H值，按比例衰减
-     *            <li>如果为false，则不再自适应，使用固定的最小值minabs_sv
+     *            <li>濡傛灉涓簍rue锛屽垯鏈�灏忓�煎彇鍐充簬H鍊硷紝鎸夋瘮渚嬭“鍑�
+     *            <li>濡傛灉涓篺alse锛屽垯涓嶅啀鑷�傚簲锛屼娇鐢ㄥ浐瀹氱殑鏈�灏忓�糾inabs_sv
      *            </ul>
      * @return
      */
     public static boolean plateColorJudge(final Mat src, final Color color, final boolean adaptive_minsv) {
-        // 判断阈值
+        // 鍒ゆ柇闃堝��
         final float thresh = 0.49f;
 
         Mat gray = colorMatch(src, color, adaptive_minsv);
@@ -169,14 +169,14 @@ public class CoreFunc {
     }
 
     /**
-     * getPlateType 判断车牌的类型
+     * getPlateType 鍒ゆ柇杞︾墝鐨勭被鍨�
      * 
      * @param src
      * @param adaptive_minsv
-     *            S和V的最小值由adaptive_minsv这个bool值判断
+     *            S鍜孷鐨勬渶灏忓�肩敱adaptive_minsv杩欎釜bool鍊煎垽鏂�
      *            <ul>
-     *            <li>如果为true，则最小值取决于H值，按比例衰减
-     *            <li>如果为false，则不再自适应，使用固定的最小值minabs_sv
+     *            <li>濡傛灉涓簍rue锛屽垯鏈�灏忓�煎彇鍐充簬H鍊硷紝鎸夋瘮渚嬭“鍑�
+     *            <li>濡傛灉涓篺alse锛屽垯涓嶅啀鑷�傚簲锛屼娇鐢ㄥ浐瀹氱殑鏈�灏忓�糾inabs_sv
      *            </ul>
      * @return
      */
@@ -191,7 +191,7 @@ public class CoreFunc {
     }
 
     /**
-     * 获取垂直或水平方向直方图
+     * 鑾峰彇鍨傜洿鎴栨按骞虫柟鍚戠洿鏂瑰浘
      * 
      * @param img
      * @param direction
@@ -212,7 +212,7 @@ public class CoreFunc {
             break;
         }
 
-        // 统计这一行或一列中，非零元素的个数，并保存到nonZeroMat中
+        // 缁熻杩欎竴琛屾垨涓�鍒椾腑锛岄潪闆跺厓绱犵殑涓暟锛屽苟淇濆瓨鍒皀onZeroMat涓�
         float[] nonZeroMat = new float[sz];
         extractChannel(img, img, 0);
         for (int j = 0; j < sz; j++) {
@@ -239,11 +239,11 @@ public class CoreFunc {
     /**
      * Assign values to feature
      * <p>
-     * 样本特征为水平、垂直直方图和低分辨率图像所组成的矢量
+     * 鏍锋湰鐗瑰緛涓烘按骞炽�佸瀭鐩寸洿鏂瑰浘鍜屼綆鍒嗚鲸鐜囧浘鍍忔墍缁勬垚鐨勭煝閲�
      * 
      * @param in
      * @param sizeData
-     *            低分辨率图像size = sizeData*sizeData, 可以为0
+     *            浣庡垎杈ㄧ巼鍥惧儚size = sizeData*sizeData, 鍙互涓�0
      * @return
      */
     public static Mat features(final Mat in, final int sizeData) {
