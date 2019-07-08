@@ -10,7 +10,7 @@ import org.bytedeco.javacpp.opencv_core.Mat;
  * @author Created by fanwenjie
  * @author lin.yao
  * ggggggggggg
- */
+ */kkkkkkkkk
 public class PlateDetect {
 
     /**
